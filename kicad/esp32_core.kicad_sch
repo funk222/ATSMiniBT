@@ -2,15 +2,16 @@
   (paper "A3")
   (title_block
     (title "ATS-Mini-BT - Sheet 2: ESP32-WROVER-E Core")
-    (date "2026-04-28") (rev "1.0")
+    (date "2026-04-28") (rev "1.1")
     (company "ATS-Mini-BT Project")
-    (comment 1 "ESP32-WROVER-E minimum system, UART auto-download, GPIO assignment")
+    (comment 1 "FIX v1.1: IO32->BT_LED (was AUDIO_MUTE, now SI4732 mute via I2C); IO0->I2S_MCLK added")
   )
   (lib_symbols)
 
   ;; ════════════════════════════════════════════════════════════════
-  ;; U1 - ESP32-WROVER-E Module
-  ;;      38 castellated pads; key ones shown below
+  ;; U1 - ESP32-WROVER-E Module  (38 castellated pads)
+  ;; 16MB Flash, 8MB PSRAM, Classic BT + BLE + WiFi
+  ;; PSRAM uses IO16/IO17 internally – do NOT route externally
   ;; ════════════════════════════════════════════════════════════════
   (symbol (lib_id "RF_Module:ESP32-WROVER-E") (at 120 130) (unit 1)
     (property "Reference" "U1" (at 120 80) (effects (font (size 1.5 1.5))))
@@ -19,8 +20,8 @@
     (property "Description" "ESP32 dual-core MCU module, 16MB Flash, 8MB PSRAM, Classic BT + BLE + WiFi" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
 
-  ;; ── Decoupling capacitors for U1 ────────────────────────────────
-  ;; C1-C4: 100nF on 3V3 pins (module has 4 supply pads)
+  ;; ── Decoupling capacitors ────────────────────────────────────────
+  ;; C1-C2: 100nF 0402 on 3V3 pins
   (symbol (lib_id "Device:C") (at 65 100) (unit 1)
     (property "Reference" "C1" (at 69 100) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "100nF" (at 69 102) (effects (font (size 1.5 1.5)) (justify left)))
@@ -31,51 +32,50 @@
     (property "Value" "100nF" (at 69 110) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
+  ;; C3: 100nF 0402
   (symbol (lib_id "Device:C") (at 65 116) (unit 1)
     (property "Reference" "C3" (at 69 116) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "100nF" (at 69 118) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
+  ;; C4: 4.7uF 0603 bulk
   (symbol (lib_id "Device:C") (at 65 124) (unit 1)
     (property "Reference" "C4" (at 69 124) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Value" "10uF/6.3V" (at 69 126) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Value" "4.7uF/6.3V X5R" (at 69 126) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; C5: Bulk on 3V3 rail at module
+  ;; C5: 4.7uF 0603 at module VDD_SDIO
   (symbol (lib_id "Device:C") (at 65 132) (unit 1)
     (property "Reference" "C5" (at 69 132) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Value" "10uF/6.3V" (at 69 134) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Value" "4.7uF/6.3V X5R" (at 69 134) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
 
   ;; ── EN (RESET) circuit ──────────────────────────────────────────
-  ;; R1: 10k pull-up EN to 3V3
   (symbol (lib_id "Device:R") (at 180 90) (unit 1)
     (property "Reference" "R1" (at 183 90) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "10k" (at 183 92) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; C_EN: 100nF on EN for clean power-on reset
   (symbol (lib_id "Device:C") (at 192 90) (unit 1)
     (property "Reference" "C_EN" (at 196 90) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "100nF" (at 196 92) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; SW1: RESET button EN → GND
   (symbol (lib_id "Device:SW_Push") (at 195 105) (unit 1)
     (property "Reference" "SW1" (at 195 100) (effects (font (size 1.5 1.5))))
     (property "Value" "RESET" (at 195 102) (effects (font (size 1.5 1.5))))
     (property "Footprint" "Button_Switch_SMD:SW_SPST_CK_RS282G05A3" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
 
-  ;; ── IO0 (BOOT) circuit ──────────────────────────────────────────
-  ;; R2: 10k pull-up IO0 to 3V3 (normal run)
+  ;; ── IO0 (BOOT / MCLK) circuit ───────────────────────────────────
+  ;; IO0: BOOT button at power-on (LOW = download mode)
+  ;; After boot: repurposed as I2S MCLK output (12.288MHz) → I2S_MCLK net
   (symbol (lib_id "Device:R") (at 180 115) (unit 1)
     (property "Reference" "R2" (at 183 115) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "10k" (at 183 117) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; SW2: BOOT button IO0 → GND
   (symbol (lib_id "Device:SW_Push") (at 195 125) (unit 1)
     (property "Reference" "SW2" (at 195 120) (effects (font (size 1.5 1.5))))
     (property "Value" "BOOT" (at 195 122) (effects (font (size 1.5 1.5))))
@@ -83,7 +83,7 @@
   )
 
   ;; ════════════════════════════════════════════════════════════════
-  ;; U9 - CP2102N USB-to-UART Bridge
+  ;; U9 - CP2102N USB-to-UART Bridge  QFN-24 4x4mm
   ;; ════════════════════════════════════════════════════════════════
   (symbol (lib_id "Interface_USB:CP2102N-A01-GQFN24") (at 55 200) (unit 1)
     (property "Reference" "U9" (at 55 182) (effects (font (size 1.5 1.5))))
@@ -99,24 +99,21 @@
   )
   (symbol (lib_id "Device:C") (at 32 206) (unit 1)
     (property "Reference" "C_CP2" (at 36 206) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Value" "10uF/10V" (at 36 208) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Value" "4.7uF/10V X5R" (at 36 208) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
 
   ;; ── Auto-download circuit (DTR/RTS → EN/IO0) ────────────────────
-  ;; Q1: DTR controls EN (reset)
   (symbol (lib_id "Device:Q_NPN_BCE") (at 130 200) (unit 1)
     (property "Reference" "Q1" (at 133 195) (effects (font (size 1.5 1.5))))
     (property "Value" "MMBT3904" (at 133 197) (effects (font (size 1.5 1.5))))
     (property "Footprint" "Package_TO_SOT_SMD:SOT-23" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; Q2: RTS controls IO0 (boot mode)
   (symbol (lib_id "Device:Q_NPN_BCE") (at 130 215) (unit 1)
     (property "Reference" "Q2" (at 133 210) (effects (font (size 1.5 1.5))))
     (property "Value" "MMBT3904" (at 133 212) (effects (font (size 1.5 1.5))))
     (property "Footprint" "Package_TO_SOT_SMD:SOT-23" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; R15-R18: base resistors for auto-download transistors
   (symbol (lib_id "Device:R") (at 115 200) (unit 1)
     (property "Reference" "R15" (at 118 200) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "10k" (at 118 202) (effects (font (size 1.5 1.5)) (justify left)))
@@ -154,7 +151,8 @@
   (global_label "I2S_DIN" (shape input) (at 178 165) (effects (font (size 1.5 1.5)) (justify left)))
   (global_label "AMP_SD" (shape output) (at 178 170) (effects (font (size 1.5 1.5)) (justify left)))
   (global_label "SI_RESET" (shape output) (at 178 175) (effects (font (size 1.5 1.5)) (justify left)))
-  (global_label "AUDIO_MUTE" (shape output) (at 178 180) (effects (font (size 1.5 1.5)) (justify left)))
+  ;; [FIX v1.1] I2S_MCLK: IO0 repurposed as MCLK output after boot
+  (global_label "I2S_MCLK" (shape output) (at 178 180) (effects (font (size 1.5 1.5)) (justify left)))
   (global_label "SPI_CLK" (shape output) (at 178 185) (effects (font (size 1.5 1.5)) (justify left)))
   (global_label "SPI_MOSI" (shape output) (at 178 190) (effects (font (size 1.5 1.5)) (justify left)))
   (global_label "LCD_CS" (shape output) (at 178 195) (effects (font (size 1.5 1.5)) (justify left)))
@@ -164,11 +162,13 @@
   (global_label "ENC_A" (shape input) (at 62 160) (effects (font (size 1.5 1.5)) (justify right)))
   (global_label "ENC_B" (shape input) (at 62 165) (effects (font (size 1.5 1.5)) (justify right)))
   (global_label "ENC_SW" (shape input) (at 62 170) (effects (font (size 1.5 1.5)) (justify right)))
+  ;; [FIX v1.1] BT_LED: IO32 (was IO34 input-only); IO32 was AUDIO_MUTE (now via I2C)
   (global_label "BT_LED" (shape output) (at 62 175) (effects (font (size 1.5 1.5)) (justify right)))
+  (global_label "AMP_I2S_DOUT" (shape output) (at 62 180) (effects (font (size 1.5 1.5)) (justify right)))
 
-  ;; ── GPIO Assignment table as schematic text ──────────────────────
-  (text "ESP32-WROVER-E GPIO ASSIGNMENT\n──────────────────────────────────────────────────────\nIO0   → BOOT button (pull-up R2 10k)          strapping\nIO2   → ENCODER_A  (pull-up 10k, 10nF debounce)\nIO4   → ENCODER_B  (pull-up 10k, 10nF debounce)\nIO5   → ENCODER_SW (pull-up 10k)\nIO12  → LCD_DC                                 strapping: keep low at boot\nIO13  → LCD_BL (PWM LEDC ch0)\nIO14  → LCD_RST\nIO15  → SPI_CLK  (VSPI SCLK)\nIO18  → I2S_BCLK\nIO19  → I2S_LRCK  (WS)\nIO21  → I2S_DIN   (data from ES7243E)\nIO22  → I2C_SCL   (SI4732 + ES7243E)\nIO23  → I2C_SDA   (SI4732 + ES7243E)\nIO25  → SPI_MOSI  (VSPI MOSI)\nIO26  → LCD_CS\nIO27  → SI_RESET  (active-low)\nIO32  → AUDIO_MUTE (SI4732 MUTE, active-high)\nIO33  → AMP_SD    (MAX98357A SD_MODE, active-high=play)\nIO34  → BT_LED    (open-drain output)\nEN    → RESET via R1 10k pull-up + SW1\nTXD0  → CP2102N RXD\nRXD0  → CP2102N TXD\n──────────────────────────────────────────────────────\nNote: IO34-39 are input-only on WROVER-E\nNote: Bluetooth Classic uses internal antenna (IPEX optional)\nNote: PSRAM uses IO16/IO17 internally - do NOT route externally"
-    (at 220 100)
+  ;; ── GPIO Assignment table ────────────────────────────────────────
+  (text "ESP32-WROVER-E GPIO ASSIGNMENT (v1.1)\n──────────────────────────────────────────────────────\nIO0   → BOOT button at power-on (pull-up R2 10k)    [DUAL]\n        → I2S_MCLK output after boot (12.288MHz MCLK)\nIO2   → ENCODER_A  (pull-up 10k, 10nF debounce)\nIO4   → ENCODER_B  (pull-up 10k, 10nF debounce)\nIO5   → ENCODER_SW (pull-up 10k)\nIO12  → LCD_DC                              strapping: keep LOW at boot\nIO13  → LCD_BL (PWM LEDC ch0)\nIO14  → LCD_RST\nIO15  → SPI_CLK  (VSPI SCLK)\nIO18  → I2S_BCLK  (ES7243E + MAX98357A shared)\nIO19  → I2S_LRCK  (WS)\nIO21  → I2S_DIN   (data from ES7243E SDOUT)\nIO22  → I2C_SCL   (SI4732 + ES7243E)\nIO23  → I2C_SDA   (SI4732 + ES7243E)\nIO25  → SPI_MOSI  (VSPI MOSI)\nIO26  → LCD_CS\nIO27  → SI_RESET  (active-low to SI4732)\nIO32  → BT_LED    [FIXED: was AUDIO_MUTE (now via I2C GPO1 property)]\nIO33  → AMP_SD    (MAX98357A SD_MODE, HIGH=play, LOW=mute)\nIO34  → [UNUSED - input only, leave floating or pull to GND]\nEN    → RESET via R1 10k pull-up + C_EN 100nF + SW1\nTXD0  → CP2102N RXD\nRXD0  → CP2102N TXD\n──────────────────────────────────────────────────────\nWARNING: IO34-39 are input-only → cannot drive LEDs or outputs\nWARNING: IO16/IO17 used internally by PSRAM → do NOT route externally\nNOTE: IO0 MCLK requires firmware: i2s_ll_set_mclk_src(I2S_NUM_0, I2S_MCLK_SIGNAL_APLL)\n      Set APLL to 12.288MHz or 11.2896MHz before starting I2S driver\n\n[FIX LOG v1.1 - 2026-04-28]\n  BUG-03: BT_LED assigned to IO34 (input-only) → cannot output\n  FIX-03: IO32 reassigned to BT_LED; SI4732 mute uses I2C property 0x0102\n  BUG-01: ES7243E MCLK floating → PLL fail\n  FIX-01: IO0 added as I2S_MCLK output (dual-function: BOOT at reset, MCLK at run)"
+    (at 220 90)
     (effects (font (size 1.7 1.7)) (justify left))
   )
 )
