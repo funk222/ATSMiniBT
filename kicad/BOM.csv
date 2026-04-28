@@ -1,0 +1,104 @@
+Reference,Value,Footprint,Quantity,Package,Description,Sheet,Manufacturer,MPN
+U1,ESP32-WROVER-E (16MB/8MB),ESP32_WROVER:ESP32-WROVER-E,1,Module 18x31.4mm,ESP32 dual-core with Classic BT/BLE 8MB PSRAM 16MB Flash,ESP32_Core,Espressif,ESP32-WROVER-E(M213EH3264PH3Q0)
+U2,SI4732-A10,Package_QFN:QFN-20-1EP_3x3mm_P0.5mm_EP1.7x1.7mm,1,QFN-20,All-band AM/FM/SW radio receiver I2C,SI4732_Radio,Silicon Labs,SI4732-A10-GU
+U2B,MIC5504-1.8YM5,Package_TO_SOT_SMD:SOT-23-5,1,SOT-23-5,150mA 1.8V LDO for SI4732 VDD PSRR 60dB,SI4732_Radio,Microchip / Micrel,MIC5504-1.8YM5-TR
+U3,ES7243E,Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.5mm_EP1.7x1.7mm,1,QFN-20,Stereo 24-bit ADC I2S slave 8-192kHz for A2DP,Audio_ADC,Everest Semiconductor,ES7243E
+U4,MAX98357AEWL+T,Package_DFN_QFN:DFN-16-1EP_2x2mm_P0.25mm_EP1.12x1.12mm,1,DFN-16 2x2mm,3.2W Class-D I2S Amplifier SD_MODE shutdown,Audio_Output,Maxim / Analog Devices,MAX98357AEWL+T
+U5,BQ24075RGTR,Package_QFN:QFN-16-1EP_3x3mm_P0.5mm_EP1.7x1.7mm,1,QFN-16,1A LiPo charger with power path USB input 4.2V,Power,Texas Instruments,BQ24075RGTR
+U6,TLV75533PDBVR,Package_TO_SOT_SMD:SOT-23-5,1,SOT-23-5,500mA 3.3V LDO digital PSRR 68dB,Power,Texas Instruments,TLV75533PDBVR
+U7,LP2985-33DBVR,Package_TO_SOT_SMD:SOT-23-5,1,SOT-23-5,150mA 3.3V ultra-low noise LDO 110dB PSRR for analog,Power,Texas Instruments,LP2985-33DBVR
+U9,CP2102N-A02-GQFN24R,Package_QFN:QFN-24-1EP_4x4mm_P0.5mm_EP2.6x2.6mm,1,QFN-24,USB-UART bridge auto-download circuit,ESP32_Core,Silicon Labs,CP2102N-A02-GQFN24R
+Q1,MMBT3904,Package_TO_SOT_SMD:SOT-23,1,SOT-23,NPN auto-download DTR→EN,ESP32_Core,Various,MMBT3904
+Q2,MMBT3904,Package_TO_SOT_SMD:SOT-23,1,SOT-23,NPN auto-download RTS→IO0,ESP32_Core,Various,MMBT3904
+D1,SS14,Diode_SMD:D_SMA,1,SMA,1A 40V Schottky reverse-polarity protection on VBAT,Power,Various,SS14
+D2,PRTR5V0U2X,Package_TO_SOT_SMD:SOT-363_SC-70-6,1,SOT-363,Dual rail-to-rail ESD protection on USB D+/D-,Power,Nexperia,PRTR5V0U2X
+F1,500mA PolyFuse,Fuse_SMD:Fuse_0805_2012Metric,1,0805,Resettable polyfuse VBUS overcurrent protection,Power,Littelfuse,RUEF050
+J1,SMA_Female,Connector_Coaxial:SMA_Molex_0732511150_Vertical,1,Through-hole SMA,FM antenna connector 50Ω,SI4732_Radio,Molex,0732511150
+J2,SMA_Female,Connector_Coaxial:SMA_Molex_0732511150_Vertical,1,Through-hole SMA,AM/LW/SW antenna connector,SI4732_Radio,Molex,0732511150
+J3,3.5mm HP Jack,Connector_Audio:Jack_3.5mm_CUI_SJ-3523-SMT_Horizontal,1,SMT,3.5mm TRRS audio jack with insertion detect,Audio_Output,CUI,SJ-3523-SMT
+J4,USB-C 2.0,Connector_USB:USB_C_Receptacle_GCT_USB4085,1,SMT,USB-C 2.0 charging and UART programming port,Power,GCT,USB4085
+J5,4P Debug Header,Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical,1,2.54mm 4-pin,Debug / programming header TX/RX/3V3/GND,ESP32_Core,Various,Generic
+BAT1,Li-Ion 3.7V PH2.0,Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical,1,JST PH 2-pin,3.7V LiPo battery connector 1000mAh recommended,Power,JST,B2B-PH-K-S
+SPK1,8Ω/1W/20mm,Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical,1,2-pin header,Internal speaker 8Ω 1W,Audio_Output,Various,DXP23W-A
+LCD1,ST7789 2.4in TFT,Connector_FFC-FPC:Hirose_FH12-8S-0.5SH_1x08-1MP_P0.50mm_Horizontal,1,FPC 8P 0.5mm,2.4 inch 240x320 ST7789 TFT display SPI,Display_UI,Various,MSP2402
+ENC1,EC11 Rotary Encoder,Rotary_Encoder:RotaryEncoder_Alps_EC11_Vertical_H20mm,1,Through-hole 5-pin,20-detent rotary encoder with push switch,Display_UI,Alps Alpine,EC11E15204A2
+SW1,RESET Button,Button_Switch_SMD:SW_SPST_B3U-1000P,1,SMT,Tactile push button reset,ESP32_Core,Omron,B3U-1000P
+SW2,BOOT Button,Button_Switch_SMD:SW_SPST_B3U-1000P,1,SMT,Tactile push button IO0 boot mode,ESP32_Core,Omron,B3U-1000P
+SW3,Power Switch SPDT,Button_Switch_THT:SW_Slide_1P2T_CK_SS12D00G4,1,Through-hole,SPDT slide switch main power on/off,Display_UI,CK Components,SS12D00G4
+X1,32.768kHz Crystal,Crystal:Crystal_SMD_3215-2Pin_3.2x1.5mm,1,3215,32.768kHz 12.5pF crystal for SI4732 reference clock,SI4732_Radio,Abracon,ABS06-32.768KHZ-T
+LED1,Blue LED 0603,LED_SMD:LED_0603_1608Metric,1,0603,BT status indicator LED,Audio_Output,Various,APHHS1005LVBC/D
+L1,270nH 0603,Inductor_SMD:L_0603_1608Metric,1,0603,FM path matching inductor,SI4732_Radio,TDK,MLZ1608M270WT000
+L2,1uH 0603,Inductor_SMD:L_0603_1608Metric,1,0603,AM path matching inductor,SI4732_Radio,TDK,MLZ1608M1R0WT000
+L3,10uH 0603 1.5A,Inductor_SMD:L_0603_1608Metric,1,0603,Class-D output EMI filter OUT+,Audio_Output,TDK,MLZ1608DR100WT000
+L4,10uH 0603 1.5A,Inductor_SMD:L_0603_1608Metric,1,0603,Class-D output EMI filter OUT-,Audio_Output,TDK,MLZ1608DR100WT000
+R1,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,ESP32 EN pull-up,ESP32_Core,,
+R2,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,ESP32 IO0 pull-up (BOOT),ESP32_Core,,
+R3,4.7k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,I2C SCL pull-up (3V3_MAIN),SI4732_Radio,,
+R4,4.7k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,I2C SDA pull-up (3V3_MAIN),SI4732_Radio,,
+R5,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,SI4732 RST# pull-up,SI4732_Radio,,
+R6,1k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,ES7243E LINP anti-alias R,Audio_ADC,,
+R7,1k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,ES7243E RINP anti-alias R,Audio_ADC,,
+R8,100k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,LINP bias to VMID,Audio_ADC,,
+R9,100k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,RINP bias to VMID,Audio_ADC,,
+R10,2k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,BQ24075 ISET resistor → 445mA charge current,Power,,
+R11,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,EC11 ENC_A pull-up,Display_UI,,
+R12,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,EC11 ENC_B pull-up,Display_UI,,
+R13,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,EC11 ENC_SW pull-up,Display_UI,,
+R14,100R 0402,Resistor_SMD:R_0402_1005Metric,1,0402,BT LED current limit ~20mA @ 3V3,Audio_Output,,
+R15,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,Q1 base resistor DTR circuit,ESP32_Core,,
+R16,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,Q2 base resistor RTS circuit,ESP32_Core,,
+R17,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,Q1 collector bias,ESP32_Core,,
+R18,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,Q2 collector bias,ESP32_Core,,
+R_LINN,0R 0402,Resistor_SMD:R_0402_1005Metric,1,0402,ES7243E LINN to AGND (single-ended),Audio_ADC,,
+R_RINN,0R 0402,Resistor_SMD:R_0402_1005Metric,1,0402,ES7243E RINN to AGND (single-ended),Audio_ADC,,
+R_HP_DET,100k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,Headphone detect pull-up to 3V3,Audio_Output,,
+R_SCL,22R 0402,Resistor_SMD:R_0402_1005Metric,1,0402,SPI CLK series termination to LCD,Display_UI,,
+R_SDA,22R 0402,Resistor_SMD:R_0402_1005Metric,1,0402,SPI MOSI series termination to LCD,Display_UI,,
+R_DC,22R 0402,Resistor_SMD:R_0402_1005Metric,1,0402,LCD DC series termination,Display_UI,,
+R_CS,22R 0402,Resistor_SMD:R_0402_1005Metric,1,0402,LCD CS series termination,Display_UI,,
+R_RST,10k 0402,Resistor_SMD:R_0402_1005Metric,1,0402,LCD RST pull-up,Display_UI,,
+C1,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ESP32 VDDA decoupling,ESP32_Core,,
+C2,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ESP32 VDD33 decoupling,ESP32_Core,,
+C3,4.7uF 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,ESP32 bulk decoupling,ESP32_Core,,
+C4,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ESP32 VDD_SDIO decoupling,ESP32_Core,,
+C5,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ESP32 VDD_RTC decoupling,ESP32_Core,,
+C_EN,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ESP32 EN RC filter,ESP32_Core,,
+C6,12pF C0G 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,32kHz crystal load cap 1,SI4732_Radio,,
+C7,12pF C0G 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,32kHz crystal load cap 2,SI4732_Radio,,
+C8,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,SI4732 VDDO decoupling,SI4732_Radio,,
+C9,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,SI4732 VA decoupling,SI4732_Radio,,
+C10,1uF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,SI4732 VDDO bulk decoupling,SI4732_Radio,,
+C11,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,AM input filter capacitor,SI4732_Radio,,
+C12,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,FM input filter capacitor,SI4732_Radio,,
+C_1V8_IN,1uF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,MIC5504 1.8V LDO input cap,SI4732_Radio,,
+C_1V8_OUT,1uF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,MIC5504 1.8V LDO output cap,SI4732_Radio,,
+C_LOUT,4.7uF 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,SI4732 LOUT AC coupling,SI4732_Radio,,
+C_ROUT,4.7uF 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,SI4732 ROUT AC coupling,SI4732_Radio,,
+C13,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ES7243E DVDD decoupling,Audio_ADC,,
+C14,1uF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ES7243E DVDD bulk,Audio_ADC,,
+C15,4.7uF 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,ES7243E AVDD decoupling,Audio_ADC,,
+C16,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ES7243E AVDD HF decoupling,Audio_ADC,,
+C_VMID,10uF 0805,Capacitor_SMD:C_0805_2012Metric,1,0805,ES7243E VMID bypass,Audio_ADC,,
+C_VREF,10uF 0805,Capacitor_SMD:C_0805_2012Metric,1,0805,ES7243E VREF bypass,Audio_ADC,,
+C17,4.7uF X5R 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,AUDIO_L to LINP AC coupling,Audio_ADC,,
+C18,4.7uF X5R 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,AUDIO_R to RINP AC coupling,Audio_ADC,,
+C19,10nF C0G 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,Left channel anti-alias filter fc≈16kHz,Audio_ADC,,
+C20,10nF C0G 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,Right channel anti-alias filter fc≈16kHz,Audio_ADC,,
+C21,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,MAX98357A PVDD HF decoupling,Audio_Output,,
+C22,10uF 0805 10V,Capacitor_SMD:C_0805_2012Metric,1,0805,MAX98357A PVDD bulk decoupling,Audio_Output,,
+C23,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,Class-D OUT+ filter cap,Audio_Output,,
+C24,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,Class-D OUT- filter cap,Audio_Output,,
+C_HP_L,100uF/10V Elec,Capacitor_SMD:CP_Elec_4x5.4,1,SMD Elec 4x5.4,Headphone L AC coupling,Audio_Output,,
+C_HP_R,100uF/10V Elec,Capacitor_SMD:CP_Elec_4x5.4,1,SMD Elec 4x5.4,Headphone R AC coupling,Audio_Output,,
+C25,10uF 0805,Capacitor_SMD:C_0805_2012Metric,1,0805,BQ24075 output bulk,Power,,
+C26,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,BQ24075 output HF,Power,,
+C27,4.7uF 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,TLV75533 input,Power,,
+C28,1uF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,TLV75533 output,Power,,
+C29,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,TLV75533 output HF,Power,,
+C30,4.7uF 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,LP2985-33 input,Power,,
+C31,1uF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,LP2985-33 output,Power,,
+C32,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,LP2985-33 output HF,Power,,
+C33,10nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ENC_A debounce cap,Display_UI,,
+C34,10nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,ENC_B debounce cap,Display_UI,,
+C_LCD_VCC,100nF 0402,Capacitor_SMD:C_0402_1005Metric,1,0402,LCD VCC decoupling,Display_UI,,
+C_LCD_BL,4.7uF 0603,Capacitor_SMD:C_0603_1608Metric,1,0603,LCD backlight decoupling,Display_UI,,
