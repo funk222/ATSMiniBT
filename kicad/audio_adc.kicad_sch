@@ -2,32 +2,18 @@
   (paper "A3")
   (title_block
     (title "ATS-Mini-BT - Sheet 4: Audio ADC (ES7243E I2S)")
-    (date "2026-04-28") (rev "1.0")
+    (date "2026-04-28") (rev "1.1")
     (company "ATS-Mini-BT Project")
-    (comment 1 "ES7243E stereo I2S ADC, anti-alias filter, bias, 44.1kHz/16bit for A2DP")
+    (comment 1 "FIX v1.1: MCLK net wired (IO0->I2S_MCLK); C_VMID/C_VREF 0805->0603; C15 4.7uF 0603")
   )
   (lib_symbols)
 
   ;; ════════════════════════════════════════════════════════════════
-  ;; U3 - ES7243E Stereo I2S ADC
-  ;; QFN-20 package
-  ;;
-  ;; Key pins:
-  ;;  LINN / LINP  : Differential Left input  (use single-ended: LINP=signal, LINN=AGND via 0Ω)
-  ;;  RINN / RINP  : Differential Right input
-  ;;  MCLK         : Master clock (12.288MHz = 256*Fs, or use MCLK from ESP32)
-  ;;                 NOTE: ESP32-WROVER-E can output MCLK on IO0 or I2S peripheral
-  ;;                 Alternatively: ES7243E can run in slave mode, MCLK from BCLK*N
-  ;;  BCLK         : Bit clock (I2S, slave: input from ESP32)
-  ;;  LRCK         : Left/Right clock (I2S, slave: input from ESP32)
-  ;;  SDOUT        : I2S serial data output → ESP32 I2S_DIN
-  ;;  SDA / SCL    : I2C control (address configurable via ADDR pin)
-  ;;  AVDD         : Analog supply (3V3_ANALOG)
-  ;;  DVDD         : Digital supply (3V3_MAIN)
-  ;;  PVDD         : PLL supply (3V3_ANALOG)
-  ;;  AGND / DGND  : Analog and digital ground (single-point connect)
-  ;;  VMID         : Internal reference (bypass cap to AGND)
-  ;;  VREF         : Internal reference (bypass cap to AGND)
+  ;; U3 - ES7243E Stereo I2S ADC  QFN-20 3x3mm
+  ;; MCLK = I2S_MCLK → ESP32 IO0  (12.288MHz = 256×48kHz)
+  ;; BCLK/LRCK: slave from ESP32 IO18/IO19
+  ;; SDOUT → I2S_DIN (IO21)
+  ;; I2C: shared bus, AD0=GND → addr 0x10
   ;; ════════════════════════════════════════════════════════════════
   (symbol (lib_id "Audio:ES7243E") (at 120 130) (unit 1)
     (property "Reference" "U3" (at 120 95) (effects (font (size 1.5 1.5))))
@@ -36,11 +22,11 @@
     (property "Description" "ES7243E Stereo 24-bit I2S ADC, QFN-20, 8-192kHz" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
 
-  ;; ── Power decoupling for U3 ───────────────────────────────────────
-  ;; AVDD decoupling
+  ;; ── Power decoupling ─────────────────────────────────────────────
+  ;; AVDD: 4.7uF 0603 + 100nF 0402
   (symbol (lib_id "Device:C") (at 88 110) (unit 1)
     (property "Reference" "C15" (at 92 108) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Value" "4.7uF/6.3V" (at 92 110) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "4.7uF/6.3V X5R" (at 92 110) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
   (symbol (lib_id "Device:C") (at 100 110) (unit 1)
@@ -48,7 +34,7 @@
     (property "Value" "100nF" (at 104 110) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; DVDD decoupling
+  ;; DVDD: 1uF 0402 + 100nF 0402
   (symbol (lib_id "Device:C") (at 88 120) (unit 1)
     (property "Reference" "C13" (at 92 118) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "100nF" (at 92 120) (effects (font (size 1.5 1.5)) (justify left)))
@@ -59,24 +45,23 @@
     (property "Value" "1uF" (at 104 120) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; VMID bypass
+  ;; VMID bypass  [FIX v1.1: 0805 → 0603  Murata GRM188R60J106ME47D]
   (symbol (lib_id "Device:C") (at 155 115) (unit 1)
     (property "Reference" "C_VMID" (at 159 113) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Value" "10uF/6.3V" (at 159 115) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Value" "10uF/6.3V X5R" (at 159 115) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; VREF bypass
+  ;; VREF bypass  [FIX v1.1: 0805 → 0603]
   (symbol (lib_id "Device:C") (at 155 125) (unit 1)
     (property "Reference" "C_VREF" (at 159 123) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Value" "10uF/6.3V" (at 159 125) (effects (font (size 1.5 1.5)) (justify left)))
-    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Value" "10uF/6.3V X5R" (at 159 125) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
 
   ;; ════════════════════════════════════════════════════════════════
-  ;; LEFT channel anti-alias filter + AC coupling
-  ;; AUDIO_L net → C17(4.7uF AC couple) → R6(1kΩ) → LINP
-  ;; LINN → 0Ω → AGND  (single-ended mode)
-  ;; RC low-pass: R6=1kΩ + C19=10nF → fc = 1/(2π×1k×10n) ≈ 15.9kHz
+  ;; LEFT channel: AUDIO_L → C17(AC) → R6(1k) → C19(10nF LPF) → LINP
+  ;; LINN → R_LINN(0Ω) → AGND    R8(100k) bias LINP to VMID
+  ;; fc = 1/(2π×1k×10n) ≈ 15.9kHz
   ;; ════════════════════════════════════════════════════════════════
   (symbol (lib_id "Device:C") (at 45 150) (unit 1)
     (property "Reference" "C17" (at 49 148) (effects (font (size 1.5 1.5)) (justify left)))
@@ -93,20 +78,18 @@
     (property "Value" "10nF C0G" (at 89 155) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; LINN tie to AGND
   (symbol (lib_id "Device:R") (at 85 162) (unit 1)
     (property "Reference" "R_LINN" (at 89 160) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "0R" (at 89 162) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
-  ;; Bias pull to VMID for LINP
   (symbol (lib_id "Device:R") (at 68 158) (unit 1)
     (property "Reference" "R8" (at 72 156) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "100k" (at 72 158) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
   )
 
-  ;; ── RIGHT channel (mirror of left) ───────────────────────────────
+  ;; ── RIGHT channel (mirror) ───────────────────────────────────────
   (symbol (lib_id "Device:C") (at 45 175) (unit 1)
     (property "Reference" "C18" (at 49 173) (effects (font (size 1.5 1.5)) (justify left)))
     (property "Value" "4.7uF X5R" (at 49 175) (effects (font (size 1.5 1.5)) (justify left)))
@@ -143,9 +126,11 @@
   (global_label "I2S_DIN" (shape output) (at 158 156) (effects (font (size 1.5 1.5)) (justify left)))
   (global_label "I2C_SCL" (shape input) (at 158 164) (effects (font (size 1.5 1.5)) (justify left)))
   (global_label "I2C_SDA" (shape input) (at 158 172) (effects (font (size 1.5 1.5)) (justify left)))
+  ;; [FIX v1.1] MCLK: ESP32 IO0 → I2S_MCLK → ES7243E MCLK pin
+  (global_label "I2S_MCLK" (shape input) (at 158 180) (effects (font (size 1.5 1.5)) (justify left)))
 
   ;; ── Design notes ──────────────────────────────────────────────────
-  (text "ES7243E AUDIO ADC NOTES:\n\n1) Power:\n   AVDD = PVDD = 3V3_ANALOG (ultra-low noise LP2985)\n   DVDD = 3V3_MAIN\n   Separate analog/digital grounds, single-point star at U7 output\n\n2) Input configuration (single-ended from SI4732):\n   LINP = signal (via C17 AC couple + R6+C19 anti-alias)\n   LINN = 0Ω to AGND\n   RINP = signal (via C18 AC couple + R7+C20 anti-alias)\n   RINN = 0Ω to AGND\n   R8/R9 = 100kΩ bias to VMID (mid-supply reference)\n\n3) Anti-alias filter: R6/R7 = 1kΩ, C19/C20 = 10nF C0G\n   -3dB cutoff fc = 1/(2π × 1k × 10n) = 15.9kHz\n   Adequate for 44.1kHz Nyquist (22.05kHz max audio)\n\n4) I2S mode: Slave (BCLK and LRCK driven by ESP32)\n   BCLK = IO18, LRCK = IO19, SDOUT → I2S_DIN (IO21)\n   Sample rate: 44100 Hz, 16-bit, stereo\n   MCLK: connect to ESP32 MCLK output (IO0) at 11.2896MHz\n   or configure ES7243E for BCLK-derived clock (no MCLK needed)\n\n5) I2C address: AD0 pin → GND = 0x10; AD0 → VDD = 0x11\n   Shared I2C bus with SI4732 (different addresses)\n\n6) VMID/VREF: internal reference, bypass to AGND with 10uF each\n   Place close to IC, use shortest path to AGND plane"
+  (text "ES7243E AUDIO ADC NOTES (v1.1):\n\n1) Power:\n   AVDD = PVDD = 3V3_ANALOG (ultra-low noise LP2985-33)\n   DVDD = 3V3_MAIN\n   Separate AGND/DGND, star point at LP2985-33 output\n\n2) Single-ended input from SI4732:\n   LINP/RINP = signal via C17/C18 AC coupling + R6/R7+C19/C20 LPF\n   LINN/RINN = 0R to AGND\n   R8/R9 = 100k bias to VMID\n\n3) Anti-alias LPF: R=1k, C=10nF C0G → fc=15.9kHz\n   Adequate for Nyquist at 44.1kHz\n\n4) I2S slave mode:\n   BCLK=IO18, LRCK=IO19, SDOUT→I2S_DIN(IO21)\n   [FIXED] MCLK = I2S_MCLK → ESP32 IO0 output at 12.288MHz\n   ESP32 I2S driver: i2s_ll_set_mclk_src() + i2s_set_clk()\n   After boot IO0 is free to use as MCLK (no longer BOOT)\n\n5) I2C: addr 0x10 (AD0=GND), shared bus with SI4732\n\n6) References:\n   C_VMID/C_VREF: [FIXED] 0805→0603 10uF 6.3V X5R\n   Murata GRM188R60J106ME47D (0603 10uF 6.3V)\n\n[FIX LOG v1.1 - 2026-04-28]\n  BUG-01: MCLK pin floating → ES7243E PLL fail → no ADC output\n  FIX-01: I2S_MCLK global net added, connected to ESP32 IO0 (sheet 2)\n  BUG-02: C_VMID/C_VREF in 0805 (unnecessarily large)\n  FIX-02: Replaced with 0603 (10uF 6.3V X5R)"
     (at 200 100)
     (effects (font (size 1.7 1.7)) (justify left))
   )
