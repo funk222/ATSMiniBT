@@ -1,0 +1,185 @@
+(kicad_sch (version 20231120) (generator eeschema)
+  (paper "A3")
+  (title_block
+    (title "ATS-Mini-BT - Sheet 3: SI4732 Radio")
+    (date "2026-04-28") (rev "1.0")
+    (company "ATS-Mini-BT Project")
+    (comment 1 "SI4732-A10, 32.768kHz crystal, FM/AM antenna, I2C, analog audio output")
+  )
+  (lib_symbols)
+
+  ;; ════════════════════════════════════════════════════════════════
+  ;; U2 - SI4732-A10 Broadcast Radio Receiver
+  ;; QFN-20 3x3mm
+  ;;
+  ;; Pin summary (AN332 / SI4732-A10 datasheet):
+  ;;  1 - FMIN       FM antenna input (AC coupled)
+  ;;  2 - GND
+  ;;  3 - VDD        1.8V digital supply (use LP2985 + divider or separate 1.8V LDO)
+  ;;                 NOTE: SI4732 VDD = 1.8V; VDDO (IO logic) = can be 3.3V
+  ;;  4 - VDDO       I/O voltage (connect to 3V3_ANALOG for 3.3V logic compatibility)
+  ;;  5 - RCLK       Reference clock input (connect to X1 32.768kHz crystal)
+  ;;  6 - GPO2/INT   Interrupt output (optional, connect to ESP32 GPIO if used)
+  ;;  7 - RESET      Active-low reset (connect to SI_RESET via MCU)
+  ;;  8 - SDIO       I2C SDA
+  ;;  9 - SCLK       I2C SCL
+  ;; 10 - GPO1       Can control MUTE (GPIO1 of SI4732, configured via firmware)
+  ;; 11 - LOUT       Left audio output (analog)
+  ;; 12 - ROUT       Right audio output (analog)
+  ;; 13 - GND
+  ;; 14 - VA         Analog supply 3.3V (connect to 3V3_ANALOG)
+  ;; 15 - AMFMI      AM/FM select (firmware controlled via property)
+  ;; 16 - LNA_EN     LNA enable (typically tied HIGH)
+  ;; 17 - GND
+  ;; 18 - XOUT       Crystal oscillator output (to X1)
+  ;; 19 - XIN        Crystal oscillator input (from X1)
+  ;; 20 - AMIN       AM antenna input (AC coupled)
+  ;; ════════════════════════════════════════════════════════════════
+  (symbol (lib_id "Radio:SI4732-A10") (at 120 120) (unit 1)
+    (property "Reference" "U2" (at 120 90) (effects (font (size 1.5 1.5))))
+    (property "Value" "SI4732-A10" (at 120 92) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Package_DFN_QFN:QFN-20-1EP_3x3mm_P0.5mm_EP1.7x1.7mm" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Description" "Si4732 AM/FM/SW/LW Radio Receiver, QFN-20, I2C control" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Datasheet" "https://www.skyworksinc.com/-/media/Skyworks/SL/documents/public/application-notes/AN332.pdf" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── 1.8V supply for VDD pin ─────────────────────────────────────
+  ;; SI4732 VDD requires 1.8V. Use a small LDO or voltage divider from 3V3_ANALOG.
+  ;; Recommended: NCP702SN18T1G or MIC5504-1.8YD5 (SOT-23-5, 300mA, low noise)
+  (symbol (lib_id "Regulator_Linear:MIC5504") (at 55 108) (unit 1)
+    (property "Reference" "U2B" (at 55 100) (effects (font (size 1.5 1.5))))
+    (property "Value" "MIC5504-1.8YD5 or NCP702" (at 55 102) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-5" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Description" "1.8V LDO for SI4732 VDD, 300mA max, ultra-low noise" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 42 108) (unit 1)
+    (property "Reference" "C_1V8_IN" (at 46 108) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "1uF" (at 46 110) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 70 108) (unit 1)
+    (property "Reference" "C_1V8_OUT" (at 74 108) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "1uF" (at 74 110) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── Decoupling for U2 ────────────────────────────────────────────
+  (symbol (lib_id "Device:C") (at 88 115) (unit 1)
+    (property "Reference" "C8" (at 92 115) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "100nF" (at 92 117) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 88 123) (unit 1)
+    (property "Reference" "C9" (at 92 123) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "100nF" (at 92 125) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 88 131) (unit 1)
+    (property "Reference" "C10" (at 92 131) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "4.7uF/6.3V" (at 92 133) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── X1 - 32.768kHz Crystal ──────────────────────────────────────
+  (symbol (lib_id "Device:Crystal") (at 160 100) (unit 1)
+    (property "Reference" "X1" (at 160 92) (effects (font (size 1.5 1.5))))
+    (property "Value" "32.768kHz" (at 160 94) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Crystal:Crystal_SMD_3215-2Pin_3.2x1.5mm" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Description" "32.768kHz crystal, 12.5pF load, SI4732 reference clock" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  ;; C6, C7: Crystal load capacitors
+  (symbol (lib_id "Device:C") (at 148 100) (unit 1)
+    (property "Reference" "C6" (at 144 100) (effects (font (size 1.5 1.5)) (justify right)))
+    (property "Value" "12pF C0G" (at 144 102) (effects (font (size 1.5 1.5)) (justify right)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 172 100) (unit 1)
+    (property "Reference" "C7" (at 176 100) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "12pF C0G" (at 176 102) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── FM Antenna input ─────────────────────────────────────────────
+  ;; J1: SMA female connector → L1 RF choke → C12 AC couple → FMIN
+  (symbol (lib_id "Connector:Conn_Coaxial") (at 35 145) (unit 1)
+    (property "Reference" "J1" (at 35 138) (effects (font (size 1.5 1.5))))
+    (property "Value" "FM_ANT SMA-F" (at 35 140) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Connector_Coaxial:SMA_Molex_0731000005_Horizontal" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:L") (at 60 145) (unit 1)
+    (property "Reference" "L1" (at 63 142) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "270nH 0402" (at 63 144) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Inductor_SMD:L_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 78 145) (unit 1)
+    (property "Reference" "C12" (at 82 142) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "100nF" (at 82 144) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── AM Antenna input ─────────────────────────────────────────────
+  ;; J2: SMA female → L2 RF choke → C11 AC couple → AMIN
+  (symbol (lib_id "Connector:Conn_Coaxial") (at 35 165) (unit 1)
+    (property "Reference" "J2" (at 35 158) (effects (font (size 1.5 1.5))))
+    (property "Value" "AM_ANT SMA-F" (at 35 160) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Connector_Coaxial:SMA_Molex_0731000005_Horizontal" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:L") (at 60 165) (unit 1)
+    (property "Reference" "L2" (at 63 162) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "1uH 0402" (at 63 164) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Inductor_SMD:L_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 78 165) (unit 1)
+    (property "Reference" "C11" (at 82 162) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "100nF" (at 82 164) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── I2C pull-ups ─────────────────────────────────────────────────
+  (symbol (lib_id "Device:R") (at 88 185) (unit 1)
+    (property "Reference" "R3" (at 92 185) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "4.7k" (at 92 187) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:R") (at 88 193) (unit 1)
+    (property "Reference" "R4" (at 92 193) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "4.7k" (at 92 195) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── RESET pull-up ────────────────────────────────────────────────
+  (symbol (lib_id "Device:R") (at 155 185) (unit 1)
+    (property "Reference" "R5" (at 159 185) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "10k" (at 159 187) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── Audio output AC coupling + low-pass filter ────────────────────
+  ;; LOUT → C_LOUT(AC) → AUDIO_L net
+  (symbol (lib_id "Device:C") (at 163 130) (unit 1)
+    (property "Reference" "C_LOUT" (at 167 128) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "4.7uF/6.3V" (at 167 130) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  ;; ROUT → C_ROUT(AC) → AUDIO_R net
+  (symbol (lib_id "Device:C") (at 163 138) (unit 1)
+    (property "Reference" "C_ROUT" (at 167 136) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "4.7uF/6.3V" (at 167 138) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── Global net labels ────────────────────────────────────────────
+  (global_label "3V3_ANALOG" (shape input) (at 40 108) (effects (font (size 1.5 1.5)) (justify right)))
+  (global_label "I2C_SCL" (shape input) (at 85 185) (effects (font (size 1.5 1.5)) (justify right)))
+  (global_label "I2C_SDA" (shape input) (at 85 193) (effects (font (size 1.5 1.5)) (justify right)))
+  (global_label "SI_RESET" (shape input) (at 152 185) (effects (font (size 1.5 1.5)) (justify right)))
+  (global_label "AUDIO_MUTE" (shape input) (at 152 192) (effects (font (size 1.5 1.5)) (justify right)))
+  (global_label "AUDIO_L" (shape output) (at 190 130) (effects (font (size 1.5 1.5)) (justify left)))
+  (global_label "AUDIO_R" (shape output) (at 190 138) (effects (font (size 1.5 1.5)) (justify left)))
+
+  ;; ── Design notes ──────────────────────────────────────────────────
+  (text "SI4732 DESIGN NOTES:\n\n1) VDD = 1.8V (use U2B MIC5504-1.8 or NCP702, input from 3V3_ANALOG)\n   VDDO = 3.3V (I/O level, connect to 3V3_ANALOG directly)\n   VA   = 3.3V (analog supply, connect to 3V3_ANALOG)\n\n2) Crystal X1: 32.768kHz, 12.5pF load capacitance\n   C6/C7 = 12pF C0G (adjust if crystal specifies different CL)\n   Keep crystal traces short, away from RF and digital signals\n\n3) FM antenna: J1 SMA → L1(270nH choke) → C12(100nF AC couple) → FMIN\n   AM antenna: J2 SMA → L2(1uH choke) → C11(100nF AC couple) → AMIN\n   Antenna traces: 50Ω microstrip, no via, no sharp bends\n\n4) I2C: shared with ES7243E ADC\n   Address: 0x11 (SDIO low at power-up) or 0x63 (SDIO high)\n   Pull-ups: R3/R4 = 4.7kΩ to 3V3_ANALOG\n\n5) RESET: active-low, pulled up 10kΩ (R5) to 3V3_ANALOG\n   SI_RESET driven by ESP32-WROVER-E GPIO27\n\n6) GPO1 (pin10): firmware uses setGpioCtl() to control MUTE\n   Drives the AUDIO_MUTE GPIO for the analog mute circuit\n\n7) Audio output: LOUT/ROUT are analog single-ended ~0.5Vpp\n   AC coupled via 4.7uF electrolytic or X5R ceramic\n   Split: one path → ES7243E ADC (for BT), one path → power amp (speaker)"
+    (at 210 100)
+    (effects (font (size 1.7 1.7)) (justify left))
+  )
+)
