@@ -1,0 +1,150 @@
+(kicad_sch (version 20231120) (generator eeschema)
+  (paper "A3")
+  (title_block
+    (title "ATS-Mini-BT - Sheet 1: Power Management")
+    (date "2026-04-28") (rev "1.0")
+    (company "ATS-Mini-BT Project")
+    (comment 1 "USB-C input, BQ24075 charger, 3V3 main LDO, 3V3 analog LDO")
+  )
+  (lib_symbols
+    ;; ── Power symbols ────────────────────────────────────────────────
+    (symbol "PWR_FLAG" (power) (pin_numbers (hide)) (pin_names (offset 0) (hide))
+      (property "Reference" "#PWR" (at 0 -3) (effects (font (size 1.27 1.27)) (hide)))
+      (property "Value" "PWR_FLAG" (at 0 3) (effects (font (size 1.27 1.27))))
+      (symbol "PWR_FLAG_0_1"
+        (pin power_in "~" (at 0 0) (length 0) (hide))
+      )
+    )
+  )
+
+  ;; ════════════════════════════════════════════════════════════════
+  ;; J4 - USB Type-C Connector (16-pin SMD)
+  ;; ════════════════════════════════════════════════════════════════
+  (symbol (lib_id "Connector:USB_C_Receptacle_USB2.0") (at 30 60) (unit 1)
+    (property "Reference" "J4" (at 30 50) (effects (font (size 1.5 1.5))))
+    (property "Value" "USB-C-16P" (at 30 52) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; F1 - Polyfuse 500mA
+  (symbol (lib_id "Device:Polyfuse") (at 70 60) (unit 1)
+    (property "Reference" "F1" (at 70 55) (effects (font (size 1.5 1.5))))
+    (property "Value" "500mA/6V" (at 70 57) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Fuse:Fuse_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; D2 - ESD protection USB data lines
+  (symbol (lib_id "Device:D_TVS") (at 55 75) (unit 1)
+    (property "Reference" "D2" (at 55 70) (effects (font (size 1.5 1.5))))
+    (property "Value" "PRTR5V0U2X" (at 55 72) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ════════════════════════════════════════════════════════════════
+  ;; U5 - BQ24075 Battery Charger
+  ;; ════════════════════════════════════════════════════════════════
+  (symbol (lib_id "Battery_Management:BQ24075") (at 120 80) (unit 1)
+    (property "Reference" "U5" (at 120 68) (effects (font (size 1.5 1.5))))
+    (property "Value" "BQ24075" (at 120 70) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-8" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Description" "Li-Ion Charger with System Power-Path Management, 1A, SOT-23-8" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  ;; BQ24075 external components
+  ;; R10: ISET resistor sets charge current: I_CHG = 890/R10 => 2kΩ → ~445mA
+  (symbol (lib_id "Device:R") (at 150 72) (unit 1)
+    (property "Reference" "R10" (at 153 72) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "2k" (at 153 74) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Resistor_SMD:R_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  ;; C for VCC input to BQ24075
+  (symbol (lib_id "Device:C") (at 108 72) (unit 1)
+    (property "Reference" "C_U5_IN" (at 112 72) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "10uF/10V" (at 112 74) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  ;; C for VBAT output
+  (symbol (lib_id "Device:C") (at 150 90) (unit 1)
+    (property "Reference" "C_VBAT" (at 154 90) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "10uF/10V" (at 154 92) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  ;; D1 - Schottky reverse protection on battery path
+  (symbol (lib_id "Device:D_Schottky") (at 155 80) (unit 1)
+    (property "Reference" "D1" (at 155 75) (effects (font (size 1.5 1.5))))
+    (property "Value" "SS14" (at 155 77) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Diode_SMD:D_SMA" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  ;; BAT1 - Battery connector
+  (symbol (lib_id "Connector:Conn_01x02_Pin") (at 175 80) (unit 1)
+    (property "Reference" "BAT1" (at 175 75) (effects (font (size 1.5 1.5))))
+    (property "Value" "LiPo_PH2.0" (at 175 77) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ════════════════════════════════════════════════════════════════
+  ;; U6 - TLV75533 Main 3.3V LDO (digital)
+  ;; ════════════════════════════════════════════════════════════════
+  (symbol (lib_id "Regulator_Linear:TLV755P") (at 80 140) (unit 1)
+    (property "Reference" "U6" (at 80 128) (effects (font (size 1.5 1.5))))
+    (property "Value" "TLV75533PDBVR" (at 80 130) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-5" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Description" "500mA Low-Dropout Regulator, 3.3V fixed, SOT-23-5" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 65 140) (unit 1)
+    (property "Reference" "C25" (at 69 140) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "10uF/10V" (at 69 142) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 100 140) (unit 1)
+    (property "Reference" "C27" (at 104 140) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "10uF/10V" (at 104 142) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 112 140) (unit 1)
+    (property "Reference" "C29" (at 116 140) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "100nF" (at 116 142) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ════════════════════════════════════════════════════════════════
+  ;; U7 - LP2985-33 Analog 3.3V LDO (for SI4732 + ES7243E)
+  ;; ════════════════════════════════════════════════════════════════
+  (symbol (lib_id "Regulator_Linear:LP2985-33") (at 80 185) (unit 1)
+    (property "Reference" "U7" (at 80 173) (effects (font (size 1.5 1.5))))
+    (property "Value" "LP2985-33DBVR" (at 80 175) (effects (font (size 1.5 1.5))))
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23-5" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+    (property "Description" "150mA Ultra-Low-Noise LDO, 3.3V fixed, SOT-23-5 - clean analog supply" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 65 185) (unit 1)
+    (property "Reference" "C26" (at 69 185) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "10uF/10V" (at 69 187) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 100 185) (unit 1)
+    (property "Reference" "C28" (at 104 185) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "10uF/10V" (at 104 187) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0805_2012Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+  (symbol (lib_id "Device:C") (at 112 185) (unit 1)
+    (property "Reference" "C30" (at 116 185) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Value" "100nF" (at 116 187) (effects (font (size 1.5 1.5)) (justify left)))
+    (property "Footprint" "Capacitor_SMD:C_0402_1005Metric" (at 0 0) (effects (font (size 1.27 1.27)) (hide)))
+  )
+
+  ;; ── Global net labels ─────────────────────────────────────────────
+  (global_label "VBUS_USB" (shape output) (at 50 60) (effects (font (size 1.5 1.5)) (justify right)))
+  (global_label "VBAT" (shape output) (at 175 88) (effects (font (size 1.5 1.5)) (justify left)))
+  (global_label "3V3_MAIN" (shape output) (at 125 140) (effects (font (size 1.5 1.5)) (justify left)))
+  (global_label "3V3_ANALOG" (shape output) (at 125 185) (effects (font (size 1.5 1.5)) (justify left)))
+
+  ;; ── Power ports ────────────────────────────────────────────────────
+  (power_symbol "GND" (at 80 105) (effects (font (size 1.5 1.5))))
+  (power_symbol "GND" (at 80 160) (effects (font (size 1.5 1.5))))
+  (power_symbol "GND" (at 80 205) (effects (font (size 1.5 1.5))))
+
+  ;; ── Design notes ──────────────────────────────────────────────────
+  (text "POWER DESIGN NOTES:\n\n1) USB 5V → F1(500mA polyfuse) → BQ24075 VCC\n   ESD on D+/D- via D2 (PRTR5V0U2X)\n\n2) BQ24075:\n   - ISET: R10=2kΩ → ~445mA charge current\n   - SYS output feeds both LDOs\n   - VBAT to single-cell Li-Ion via D1(SS14) reverse protection\n   - STATUS pin → GPIO for charge indicator (optional)\n\n3) U6 TLV75533 (500mA) → 3V3_MAIN\n   Powers: ESP32-WROVER-E, TFT, encoder logic, LEDs, USB-UART\n   Bypass: 10uF + 100nF at input, 10uF + 100nF at output\n\n4) U7 LP2985-33 (150mA) → 3V3_ANALOG\n   Powers: SI4732 VDD/VA, ES7243E AVDD\n   Ultra-low noise (<30uVrms) critical for ADC audio quality\n   Bypass: 10uF + 100nF at input, 10uF + 100nF at output\n   Route analog ground AGND single-point to digital GND at LDO\n\n5) Decoupling rule:\n   100nF (0402) + 4.7-10uF (0603/0805) at every IC power pin\n   Place 100nF within 0.5mm of VDD pin"
+    (at 155 130)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+)
